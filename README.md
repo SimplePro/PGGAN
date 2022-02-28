@@ -12,3 +12,7 @@ PGGAN
 - epoch마다 모델 파라미터를 백업해두어 학습이 끝난 후에 원하는 파라미터를 사용해볼까 싶었지만, PGGAN 구조상 fade in 레이어에서 사용되는 alpha가 1이 되어야 해서 학습 중간의 모델 파라미터 상태를 최종 모델의 파라미터로 사용할 수가 없었다. (alpha값은 학습중에 선형적으로 0 to 1로 증가한다, alpha가 1이 되는 때가 마지막 epoch 때이다.)
 
 [![PGGAN Train Log](https://img.youtube.com/vi/pvSaE_BVKJM/0.jpg)](https://www.youtube.com/watch?v=pvSaE_BVKJM)
+
+
+### dataset
+- https://www.kaggle.com/andrewmvd/animal-faces
