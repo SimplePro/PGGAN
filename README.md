@@ -1,5 +1,5 @@
 PGGAN
 -------------------------------
 
-#### [train log](https://youtu.be/pvSaE_BVKJM)
-[![PGGAN Train Log](https://yt-embed.herokuapp.com/embed?v=pvSaE_BVKJM)](https://www.youtube.com/watch?v=pvSaE_BVKJM "PGGAN Train Log")
+#### train log
+[![PGGAN Train Log](https://img.youtube.com/vi/pvSaE_BVKJM/0.jpg)](https://www.youtube.com/watch?v=pvSaE_BVKJM)
