@@ -44,7 +44,7 @@ class Dataset:
 
 def make_gif(paths, save_path, fps=500):
     img, *imgs = [Image.open(path) for path in paths]
-    img.save(fp=save_path, format="GIF", append_images=imgs, save_all=True, duration=fps, loop=0)
+    img.save(fp=save_path, format="GIF", append_images=imgs, save_all=True, duration=fps, loop=1)
 
 
 def merge_test_pred(pred):
@@ -59,8 +59,8 @@ def merge_test_pred(pred):
             break
     
     image_size = (
-        2048 - (2048 % n_weight),
-        2048 - (2048 % n_height)
+        1024 - (1024 % n_weight),
+        1024 - (1024 % n_height)
     )
 
     one_image_size = (image_size[0] // n_weight, image_size[1] // n_height)
@@ -79,24 +79,46 @@ def merge_test_pred(pred):
 
 
 if __name__ == "__main__":
-    resolution_list = ["4x4", "8x8", "16x16", "32x32", "64x64", "128x128", "256x256"]
-    for resolution in resolution_list:
 
-        # ex) 4x4 -> (4, 4)
-        resolution_pair = tuple(map(int, resolution.split("x")))
+    # ------------ make tensor dataset ---------------
 
-        dataset = Dataset(
-            directory_list=["./dataset/train/cat", "./dataset/train/dog", "./dataset/val/cat", "./dataset/val/dog"],
-            resolution=resolution_pair
-        )
+    # resolution_list = ["4x4", "8x8", "16x16", "32x32", "64x64", "128x128", "256x256"]
+    # for resolution in resolution_list:
+
+    #     # ex) 4x4 -> (4, 4)
+    #     resolution_pair = tuple(map(int, resolution.split("x")))
+
+    #     dataset = Dataset(
+    #         directory_list=["./dataset/train/cat", "./dataset/train/dog", "./dataset/val/cat", "./dataset/val/dog"],
+    #         resolution=resolution_pair
+    #     )
         
-        train_cat, train_dog, valid_cat, valid_dog = dataset.extract_dataset()
+    #     train_cat, train_dog, valid_cat, valid_dog = dataset.extract_dataset()
 
-        torch.save(train_cat, f"./dataset/{resolution}/train_cat.pt")
-        torch.save(train_dog, f"./dataset/{resolution}/train_dog.pt")
-        torch.save(valid_cat, f"./dataset/{resolution}/valid_cat.pt")
-        torch.save(valid_dog, f"./dataset/{resolution}/valid_dog.pt")
+    #     torch.save(train_cat, f"./dataset/{resolution}/train_cat.pt")
+    #     torch.save(train_dog, f"./dataset/{resolution}/train_dog.pt")
+    #     torch.save(valid_cat, f"./dataset/{resolution}/valid_cat.pt")
+    #     torch.save(valid_dog, f"./dataset/{resolution}/valid_dog.pt")
 
-    # no_linear_paths = sorted([int(i.replace("epoch-", "").replace(".jpg", "")) for i in os.listdir("./train_log/no linear layer/")])
-    # no_linear_paths = [f"./train_log/no linear layer/epoch-{i}.jpg" for i in no_linear_paths]
-    # make_gif(no_linear_paths, "./train_log/no_linear_layer.gif", 5)
+    
+    # ------------- make train log gif file -----------------------
+    resolution_list = ["4x4", "8x8", "16x16", "32x32", "64x64", "128x128", "256x256"]
+    train_log_file_list = []
+
+    cnt = 0
+
+    for resolution in resolution_list:
+        directory = f"./train_log/{resolution}"
+        for file_name in os.listdir(directory):
+            current_epoch = int(file_name.replace("epoch-", "").replace(".jpg", ""))
+            train_log_file_list.append((cnt + current_epoch, f"{directory}/{file_name}"))
+        
+        cnt += len(os.listdir(directory))
+
+    train_log_file_list.sort(key=lambda x: x[0])
+    train_log_file_list = [i[1] for i in train_log_file_list]
+
+    for i in range(10):
+        train_log_file_list.append(train_log_file_list[-1])
+
+    make_gif(train_log_file_list, "./train_log/train.gif", 2)
