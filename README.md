@@ -16,3 +16,4 @@ PGGAN
 
 ### dataset
 - https://www.kaggle.com/andrewmvd/animal-faces
+- 위의 데이터셋에서 cat과 dog만 사용하였다.
